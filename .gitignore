@@ -23,3 +23,5 @@ venv/
 
 # Logs
 *.log
+
+#ATS_Report.pdf
