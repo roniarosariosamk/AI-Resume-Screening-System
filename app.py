@@ -20,6 +20,9 @@ from src.auth import authenticate
 from components.sidebar import show_sidebar
 from components.metrics import show_metrics
 from components.candidate_card import show_candidate_card
+from pages.upload import show_upload_page
+from utils.jd_processor import process_job_description
+from utils.resume_processor import process_resume
 # -------------------------------------------------
 # Streamlit Page Configuration
 # -------------------------------------------------
@@ -110,32 +113,14 @@ min_ats = st.slider(
 
 st.markdown("---")
 
-# -------------------------------------------------
-# Sidebar
-# -------------------------------------------------
-
-st.sidebar.header("📂 Upload Resume PDFs")
-
-uploaded_files = st.sidebar.file_uploader(
-    "Choose Resume PDFs",
-    type=["pdf"],
-    accept_multiple_files=True
-)
-
-st.sidebar.markdown("---")
-
-job_description = st.sidebar.file_uploader(
-    "📄 Upload Job Description",
-    type=["pdf"],
-    accept_multiple_files=False
-)
+uploaded_files, job_description, process = show_upload_page()
 
 
 # -------------------------------------------------
 # Process Button
 # -------------------------------------------------
 
-if st.sidebar.button("Process Resumes"):
+if process:
 
     if not uploaded_files:
         st.sidebar.warning("Please upload at least one resume.")
@@ -147,26 +132,18 @@ if st.sidebar.button("Process Resumes"):
 
         if job_description is not None:
 
-            os.makedirs("data/job_description", exist_ok=True)
-
-            jd_path = os.path.join(
-                "data/job_description",
-                job_description.name
+            # Process Job Description
+            jd_text, jd_embedding, jd_skills = process_job_description(
+                job_description
             )
 
-            with open(jd_path, "wb") as f:
-                f.write(job_description.getbuffer())
+            # Success Message
+            st.sidebar.success(
+                "✅ Job Description Uploaded Successfully!"
+            )
 
-            st.sidebar.success("✅ Job Description Uploaded Successfully!")
-
-            # Extract JD Text
-            jd_text = extract_job_description(jd_path)
-            embedding_model = load_embedding_model()
-
-            jd_embedding = embedding_model.embed_query(jd_text)
-            jd_skills = extract_skills(jd_text)
-
-
+            # Preview
+            st.markdown("---")
             st.subheader("📄 Job Description Preview")
 
             st.text_area(
@@ -175,119 +152,112 @@ if st.sidebar.button("Process Resumes"):
                 height=250
             )
 
-        # -----------------------------------------
-        # Save Resume PDFs
-        # -----------------------------------------
-
-        os.makedirs("data/resumes", exist_ok=True)
-
-        all_chunks = []
-        
-        report_data = []
-
-        candidate_data = []
-
-        for uploaded_file in uploaded_files:
-
-            pdf_path = os.path.join(
-                "data/resumes",
-                uploaded_file.name
-            )
-
-            with open(pdf_path, "wb") as f:
-                f.write(uploaded_file.getbuffer())
-
-            text = extract_text(pdf_path)
-            summary = generate_resume_summary(text)
-            resume_skills = extract_skills(text)
-            matched, missing = compare_skills(
-                jd_skills,
-                resume_skills
-           )
-
-            ats_score = calculate_ats_score(jd_skills, matched)
-            recommendation = get_recommendation(ats_score)
-
-            candidate_data.append({
-                "name": uploaded_file.name,
-                "summary": summary,
-                "skills": resume_skills,
-                "matched": matched,
-                "missing": missing,
-                "ats_score": ats_score,
-                "recommendation": recommendation
-           })
-
             # -----------------------------------------
-            # Apply Search & Filter
+            # Save Resume PDFs
             # -----------------------------------------
 
-            show_candidate = True
+            os.makedirs("data/resumes", exist_ok=True)
 
-            if search_name:
-                if search_name.lower() not in uploaded_file.name.lower():
+            all_chunks = []
+            report_data = []
+            candidate_data = []
+
+            for uploaded_file in uploaded_files:
+
+                (
+                    text,
+                    summary,
+                    resume_skills,
+                    matched,
+                    missing,
+                    ats_score,
+                    recommendation,
+                ) = process_resume(
+                    uploaded_file,
+                    jd_skills
+                )
+
+                candidate_data.append({
+                    "name": uploaded_file.name,
+                    "summary": summary,
+                    "skills": resume_skills,
+                    "matched": matched,
+                    "missing": missing,
+                    "ats_score": ats_score,
+                    "recommendation": recommendation
+               })
+                
+                show_candidate = True
+
+                # -----------------------------------------
+                # Apply Search & Filter
+                # -----------------------------------------
+
+                show_candidate = True
+
+                if search_name:
+                    if search_name.lower() not in uploaded_file.name.lower():
+                        show_candidate = False
+
+                if search_skill:
+                    if search_skill.lower() not in [skill.lower() for skill in resume_skills]:
+                        show_candidate = False
+
+                if ats_score < min_ats:
                     show_candidate = False
 
-            if search_skill:
-                if search_skill.lower() not in [skill.lower() for skill in resume_skills]:
-                     show_candidate = False
+                # -----------------------------------------
+                # Display Candidate
+                # -----------------------------------------
+                if show_candidate:
 
-            if ats_score < min_ats:
-                show_candidate = False
+                    with st.expander(f"👤 Candidate: {uploaded_file.name}", expanded=False):
 
-# -----------------------------------------
-# Display Candidate
-# -----------------------------------------
-            if show_candidate:
+                        col1, col2 = st.columns([2, 1])
 
-                with st.expander(f"👤 Candidate: {uploaded_file.name}", expanded=False):
+                        with col1:
 
-                    col1, col2 = st.columns([2, 1])
+                            st.subheader("📝 Candidate Summary")
+                            st.info(summary)
 
-                    with col1:
+                            st.subheader("🛠 Skills Found")
+                            st.write(", ".join(resume_skills))
 
-                        st.subheader("📝 Candidate Summary")
-                        st.info(summary)
+                            st.subheader("✅ Matched Skills")
+                            st.success(", ".join(matched))
 
-                        st.subheader("🛠 Skills Found")
-                        st.write(", ".join(resume_skills))
+                            st.subheader("❌ Missing Skills")
+                            st.error(", ".join(missing))
 
-                        st.subheader("✅ Matched Skills")
-                        st.success(", ".join(matched))
+                        with col2:
 
-                        st.subheader("❌ Missing Skills")
-                        st.error(", ".join(missing))
-
-                    with col2:
-
-                        st.metric(
-                            label="📊 ATS Score",
-                            value=f"{ats_score:.2f}%"
-                        )
-
-                        st.progress(min(ats_score / 100, 1.0))
-
-                        st.metric(
-                            label="⭐ Recommendation",
-                            value=recommendation
-                        )
-                    st.markdown("---")
-
-                    if st.button(
-                        f"🎤 Generate Interview Questions - {uploaded_file.name}"
-                    ):
-
-                        with st.spinner("Generating interview questions..."):
-                          
-                            questions = generate_interview_questions(
-                                    summary,
-                                    resume_skills,
-                                    jd_text
+                            st.metric(
+                                label="📊 ATS Score",
+                                value=f"{ats_score:.2f}%"
                             )
 
-                            st.subheader("🤖 AI Interview Questions")
-                            st.write(questions)
+                            st.progress(min(ats_score / 100, 1.0))
 
+                            st.metric(
+                                label="⭐ Recommendation",
+                                value=recommendation
+                            )
+                        st.markdown("---")
+
+                        if st.button(
+                            f"🎤 Generate Interview Questions - {uploaded_file.name}"
+                        ):
+
+                            with st.spinner("Generating interview questions..."):
+
+                                questions = generate_interview_questions(
+                                        summary,
+                                        resume_skills,
+                                        jd_text
+                                )
+
+                                st.subheader("🤖 AI Interview Questions")
+                                st.write(questions)
 
                     report_data.append({
                         "Resume": uploaded_file.name,
@@ -297,38 +267,43 @@ if st.sidebar.button("Process Resumes"):
                         "Recommendation": recommendation
                    })
 
-            chunks = split_text(text)
+                chunks = split_text(text)
 
-            for chunk in chunks:
+                for chunk in chunks:
 
-                all_chunks.append(
-                    {
-                        "text": chunk,
-                        "source": uploaded_file.name
-                    }
-                )
+                    all_chunks.append(
+                        {
+                            "text": chunk,
+                            "source": uploaded_file.name
+                        }
+                    )
 
-# -----------------------------------------
-# Create Vector Database
-# -----------------------------------------
+            # -----------------------------------------
+            # Create Vector Database
+            # -----------------------------------------
 
-        embedding = load_embedding_model()
+            embedding = load_embedding_model()
 
+            create_vector_store(
+                all_chunks,
+                embedding
+           )
+            
+            # -----------------------------------------
+            # Save Data to Session State
+            # -----------------------------------------
 
-        create_vector_store(
-            all_chunks,
-            embedding
-       )
-        
-# -----------------------------------------
-# Save Data to Session State
-# -----------------------------------------
+            st.session_state.processed = True
+            st.session_state.report_data = report_data
+            st.session_state.all_chunks = all_chunks
+            st.session_state.jd_text = jd_text
+            st.session_state.candidate_data = candidate_data
 
-        st.session_state.processed = True
-        st.session_state.report_data = report_data
-        st.session_state.all_chunks = all_chunks
-        st.session_state.jd_text = jd_text
-        st.session_state.candidate_data = candidate_data
+        else:
+
+            st.sidebar.warning(
+                "⚠ Please upload a Job Description."
+            )
 
 
 # -----------------------------------------
