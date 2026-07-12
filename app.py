@@ -19,6 +19,7 @@ from src.pdf_report import generate_pdf_report
 from src.auth import authenticate
 from components.sidebar import show_sidebar
 from components.metrics import show_metrics
+from components.candidate_card import show_candidate_card
 # -------------------------------------------------
 # Streamlit Page Configuration
 # -------------------------------------------------
@@ -358,7 +359,7 @@ if st.sidebar.button("Process Resumes"):
         for index, resume in enumerate(ranking, start=1):
             st.write(
                 f"{index}. {resume['name']}  →  {resume['score'] * 100:.2f}% Match"
-            )
+            )         
 
 # -------------------------------------------------
 # Download ATS Report
@@ -368,7 +369,18 @@ if st.sidebar.button("Process Resumes"):
 
         # Convert report data to a DataFrame
         report_df = pd.DataFrame(report_data)
-        
+
+# -------------------------------------------------
+# Candidate Dashboard
+# -------------------------------------------------
+
+        st.markdown("---")
+        st.header("👥 Candidate Dashboard")
+
+        for candidate in st.session_state.candidate_data:
+
+            show_candidate_card(candidate)    
+
 # -----------------------------------------
 # Top Candidate Dashboard
 # -----------------------------------------
@@ -589,6 +601,11 @@ if st.session_state.processed:
         "Select Candidate",
         candidate_names,
         key="email_candidate"
+    )
+
+    candidate = next(
+    c for c in st.session_state.candidate_data
+    if c["name"] == selected_candidate_email
     )
 
     receiver_email = st.text_input(
