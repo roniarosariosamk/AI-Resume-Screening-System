@@ -17,6 +17,7 @@ from src.candidate_evaluator import evaluate_candidate
 from src.email_sender import send_email
 from src.pdf_report import generate_pdf_report
 from src.auth import authenticate
+from components.sidebar import show_sidebar
 # -------------------------------------------------
 # Streamlit Page Configuration
 # -------------------------------------------------
@@ -27,6 +28,7 @@ st.set_page_config(
     layout="wide"
 )
 
+page = show_sidebar()
 
 # -------------------------------------------------
 # Session State Initialization
@@ -80,6 +82,66 @@ if not st.session_state.logged_in:
 
     st.stop()
 st.write("Upload resumes, upload a Job Description, and ask questions about the candidates.")
+
+st.markdown("---")
+
+# -------------------------------------------------
+# Dashboard KPI Cards
+# -------------------------------------------------
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.metric(
+        label="👥 Total Candidates",
+        value=len(st.session_state.candidate_data)
+    )
+
+with col2:
+
+    if len(st.session_state.candidate_data) > 0:
+
+        avg_score = sum(
+            c["ats_score"] for c in st.session_state.candidate_data
+        ) / len(st.session_state.candidate_data)
+
+        st.metric(
+            label="⭐ Average ATS",
+            value=f"{avg_score:.1f}%"
+        )
+
+    else:
+
+        st.metric(
+            label="⭐ Average ATS",
+            value="0%"
+        )
+
+with col3:
+
+    selected = sum(
+        1
+        for c in st.session_state.candidate_data
+        if c["ats_score"] >= 70
+    )
+
+    st.metric(
+        label="✅ Shortlisted",
+        value=selected
+    )
+
+with col4:
+
+    rejected = sum(
+        1
+        for c in st.session_state.candidate_data
+        if c["ats_score"] < 70
+    )
+
+    st.metric(
+        label="❌ Rejected",
+        value=rejected
+    )
 
 st.markdown("---")
 
