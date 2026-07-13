@@ -24,7 +24,7 @@ from pages.ai_tools import show_ai_tools
 # -------------------------------------------------
 
 st.set_page_config(
-    page_title="Resume Screening RAG Chatbot",
+    page_title=APP_TITLE,
     page_icon="📄",
     layout="wide"
 )
@@ -53,7 +53,9 @@ if "candidate_data" not in st.session_state:
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
-st.title("📄 Resume Screening RAG Chatbot")
+from utils.constants import APP_TITLE
+
+st.title(f"📄 {APP_TITLE}")
 # -------------------------------------------------
 # Login Screen
 # -------------------------------------------------
@@ -152,7 +154,7 @@ if process:
             # Save Resume PDFs
             # -----------------------------------------
 
-            os.makedirs("data/resumes", exist_ok=True)
+            os.makedirs(RESUME_FOLDER, exist_ok=True)
 
             all_chunks = []
             report_data = []
@@ -246,7 +248,7 @@ if process:
 
                             with st.spinner("Generating interview questions..."):
 
-                                questions = generate_interview_questions(
+                                questions =(
                                         summary,
                                         resume_skills,
                                         jd_text

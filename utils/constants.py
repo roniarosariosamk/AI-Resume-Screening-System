@@ -1,11 +1,25 @@
-"data/resumes"
+# ==========================================
+# Folder Paths
+# ==========================================
 
-"data/job_description"
+RESUME_FOLDER = "data/resumes"
 
-"evaluation"
+JOB_DESCRIPTION_FOLDER = "data/job_description"
 
-"candidate@example.com"
+# ==========================================
+# Session State Keys
+# ==========================================
 
-"ATS_Report.pdf"
+EVALUATION_KEY = "evaluation"
 
-"Resume Screening RAG Chatbot"
+# ==========================================
+# Default Values
+# ==========================================
+
+DEFAULT_EMAIL_PLACEHOLDER = "candidate@example.com"
+
+# ==========================================
+# App Information
+# ==========================================
+
+APP_TITLE = "Resume Screening RAG Chatbot"

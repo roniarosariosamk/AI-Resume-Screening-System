@@ -2,6 +2,7 @@ import streamlit as st
 
 from src.interview_generator import generate_interview_questions
 from src.candidate_evaluator import evaluate_candidate
+from utils.constants import EVALUATION_KEY
 
 
 def show_ai_tools():
@@ -83,7 +84,7 @@ def show_ai_tools():
                 st.session_state.jd_text
             )
 
-            st.session_state["evaluation"] = evaluation
+            st.session_state[EVELUATION_KEY] = evaluation
 
         st.subheader("📋 AI Evaluation Report")
 

@@ -7,16 +7,16 @@ from src.skill_matcher import (
     compare_skills,
     calculate_ats_score,
     get_recommendation,
-    
+
 )
 
 
 def process_resume(uploaded_file, jd_skills):
 
-    os.makedirs("data/resumes", exist_ok=True)
+    os.makedirs("RESUME_FOLDER", exist_ok=True)
 
     pdf_path = os.path.join(
-        "data/resumes",
+        "RESUME_FOLDER",
         uploaded_file.name
     )
 

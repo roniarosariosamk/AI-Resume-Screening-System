@@ -2,6 +2,7 @@ import streamlit as st
 
 from src.email_sender import send_email
 from src.pdf_report import generate_pdf_report
+from utils.constants import EVALUATION_KEY
 
 
 def show_reports():
@@ -36,7 +37,7 @@ def show_reports():
 
     receiver_email = st.text_input(
         "Candidate Email",
-        placeholder="candidate@example.com"
+        placeholder="DEFAULT_EMAIL_PLACEHOLDER"
     )
 
     interview_date = st.date_input(
@@ -135,7 +136,7 @@ HR Team
             missing_skills=", ".join(candidate["missing"]),
             recommendation=candidate["recommendation"],
             evaluation=st.session_state.get(
-                "evaluation",
+                EVALUATION_KEY,
                 "Evaluation not available."
             )
         )

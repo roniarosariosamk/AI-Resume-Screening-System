@@ -8,12 +8,12 @@ from src.skill_matcher import extract_skills
 def process_job_description(job_description):
 
     os.makedirs(
-        "data/job_description",
+        "JOB_DESCRIPTION_FOLDER",
         exist_ok=True
     )
 
     jd_path = os.path.join(
-        "data/job_description",
+        "JOB_DESCRIPTION_FOLDER",
         job_description.name
     )
 
