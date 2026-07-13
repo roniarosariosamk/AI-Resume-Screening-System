@@ -19,6 +19,11 @@ from pages.analytics import show_analytics
 from pages.reports import show_reports
 from pages.chatbot import show_chatbot
 from pages.ai_tools import show_ai_tools
+from utils.constants import (
+    APP_TITLE,
+    RESUME_FOLDER,
+    JOB_DESCRIPTION_FOLDER
+)
 # -------------------------------------------------
 # Streamlit Page Configuration
 # -------------------------------------------------
@@ -28,8 +33,6 @@ st.set_page_config(
     page_icon="📄",
     layout="wide"
 )
-
-page = show_sidebar()
 
 # -------------------------------------------------
 # Session State Initialization

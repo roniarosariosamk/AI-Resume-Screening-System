@@ -2,7 +2,10 @@ import streamlit as st
 
 from src.email_sender import send_email
 from src.pdf_report import generate_pdf_report
-from utils.constants import EVALUATION_KEY
+from utils.constants import (
+    EVALUATION_KEY,
+    DEFAULT_EMAIL_PLACEHOLDER,
+)
 
 
 def show_reports():
