@@ -1,31 +1,24 @@
 import os
 import streamlit as st
 import pandas as pd
-import statistics
-import plotly.express as px 
 
 from src.parser import extract_text, generate_resume_summary
 from src.chunking import split_text
 from src.embeddings import load_embedding_model
 from src.vector_store import create_vector_store
-from src.chatbot import ask_question
-from src.jd_parser import extract_job_description
 from src.resume_ranker import rank_resumes
 from src.skill_matcher import (extract_skills, compare_skills, calculate_ats_score, get_recommendation)
-from src.interview_generator import generate_interview_questions
-from src.candidate_evaluator import evaluate_candidate
-from src.email_sender import send_email
-from src.pdf_report import generate_pdf_report
 from src.auth import authenticate
 from components.sidebar import show_sidebar
 from components.metrics import show_metrics
-from components.candidate_card import show_candidate_card
 from pages.upload import show_upload_page
 from utils.jd_processor import process_job_description
 from utils.resume_processor import process_resume
 from pages.dashboard import show_dashboard
 from pages.analytics import show_analytics
 from pages.reports import show_reports
+from pages.chatbot import show_chatbot
+from pages.ai_tools import show_ai_tools
 # -------------------------------------------------
 # Streamlit Page Configuration
 # -------------------------------------------------
@@ -353,107 +346,9 @@ if process:
 
         show_analytics(ranking)
 
-        show_reports()
+show_ai_tools()
 
-# -------------------------------------------------
-# Interview Question Generator
-# -------------------------------------------------
+show_reports()
 
-if st.session_state.processed:
+show_chatbot()
 
-    st.markdown("---")
-    st.header("🎤 AI Interview Question Generator")
-
-    candidate_names = [
-        candidate["name"]
-        for candidate in st.session_state.candidate_data
-    ]
-
-    selected_candidate = st.selectbox(
-        "Select Candidate",
-        candidate_names
-    )
-
-    if st.button("Generate Interview Questions"):
-
-        candidate = next(
-            c for c in st.session_state.candidate_data
-            if c["name"] == selected_candidate
-        )
-
-        with st.spinner("Generating Interview Questions..."):
-
-            questions = generate_interview_questions(
-                candidate["summary"],
-                candidate["skills"],
-                st.session_state.jd_text
-            )
-
-        st.subheader("🤖 Interview Questions")
-
-        st.write(questions)
-
-# -------------------------------------------------
-# AI Candidate Evaluation
-# -------------------------------------------------
-
-if st.session_state.processed:
-
-    st.markdown("---")
-    st.header("🤖 AI Candidate Evaluation")
-
-    candidate_names = [
-        candidate["name"]
-        for candidate in st.session_state.candidate_data
-    ]
-
-    selected_candidate_eval = st.selectbox(
-        "Select Candidate for Evaluation",
-        candidate_names,
-        key="evaluation_candidate"
-    )
-
-    if st.button("Evaluate Candidate"):
-
-        candidate = next(
-            c for c in st.session_state.candidate_data
-            if c["name"] == selected_candidate_eval
-        )
-
-        with st.spinner("Evaluating candidate..."):
-
-            evaluation = evaluate_candidate(
-                candidate["summary"],
-                candidate["skills"],
-                st.session_state.jd_text
-            )
-
-            st.session_state["evaluation"] = evaluation
-
-        st.subheader("📋 AI Evaluation Report")
-        st.write(evaluation)             
-
-# -------------------------------------------------
-# Chat Section
-# -------------------------------------------------
-
-st.header("💬 Ask Questions")
-
-question = st.text_input(
-    "Example: Which candidate has Python and SQL experience?"
-)
-
-if st.button("Search"):
-
-    if question.strip() == "":
-        st.warning("Please enter a question.")
-
-    else:
-
-        with st.spinner("Searching resumes..."):
-
-            answer = ask_question(question)
-
-        st.success("Answer")
-
-        st.write(answer)
