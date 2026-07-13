@@ -23,6 +23,7 @@ from components.candidate_card import show_candidate_card
 from pages.upload import show_upload_page
 from utils.jd_processor import process_job_description
 from utils.resume_processor import process_resume
+from pages.dashboard import show_dashboard
 # -------------------------------------------------
 # Streamlit Page Configuration
 # -------------------------------------------------
@@ -345,93 +346,10 @@ if process:
         # Convert report data to a DataFrame
         report_df = pd.DataFrame(report_data)
 
-# -------------------------------------------------
-# Candidate Dashboard
-# -------------------------------------------------
-
-        st.markdown("---")
-        st.header("👥 Candidate Dashboard")
-
-        for candidate in st.session_state.candidate_data:
-
-            show_candidate_card(candidate)    
-
-# -----------------------------------------
-# Top Candidate Dashboard
-# -----------------------------------------
-
-        st.subheader("🏆 Top Candidate")
-
-        if report_df.empty or "ATS Score" not in report_df.columns:
-            st.warning("No report data available yet.")
-            st.stop()
-
-        top_candidate = report_df.sort_values(
-            by="ATS Score",
-            ascending=False
-        ).iloc[0]
-
-        col1, col2 = st.columns(2)
-
-        with col1:
-
-            st.metric(
-                "👤 Resume",
-                top_candidate["Resume"]
-            )
-
-            st.metric(
-                "📊 ATS Score",
-                f"{top_candidate['ATS Score']:.2f}%"
-            )
-
-        with col2:
-
-            st.metric(
-                "⭐ Recommendation",
-                top_candidate["Recommendation"]
-            )
-
-            if top_candidate["ATS Score"] >= 80:
-                st.success("🎯 Recommended for Interview")
-            elif top_candidate["ATS Score"] >= 60:
-                st.warning("📄 Consider for Shortlisting")
-            else:
-                st.error("❌ Needs Improvement")
-
-        total_resumes = len(report_df)
-
-        average_score = report_df["ATS Score"].mean()
-
-        highest_score = report_df["ATS Score"].max()
-
-        lowest_score = report_df["ATS Score"].min()
-
-        col1, col2, col3, col4 = st.columns(4)
-
-        with col1:
-            st.metric(
-                "📄 Total Resumes",
-                total_resumes
-            )
-
-        with col2:
-            st.metric(
-                "📊 Average ATS",
-                f"{average_score:.2f}%"
-            )
-
-        with col3:
-            st.metric(
-                "🏆 Highest ATS",
-                f"{highest_score:.2f}%"
-            )
-
-        with col4:
-            st.metric(
-                "📉 Lowest ATS",
-                f"{lowest_score:.2f}%"
-            )
+        show_dashboard(
+            st.session_state.candidate_data,
+            report_df
+        )
 
 # -----------------------------------------
 # ATS Score Chart
