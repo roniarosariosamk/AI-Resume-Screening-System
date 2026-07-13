@@ -47,7 +47,7 @@ The system allows recruiters to:
 | AI Framework | LangChain |
 | Embedding Model | Hugging Face Sentence Transformers |
 | Vector Database | FAISS |
-| LLM | Ollama (Llama 3) |
+| LLM | Google Gemini (Gemini 2.5 flash) |
 | Resume Parsing | PyMuPDF |
 | Data Visualization | Plotly |
 | Data Processing | Pandas |
@@ -143,31 +143,45 @@ pip install -r requirements.txt
 
 ## 🚀 Running the Application
 
-### Start Ollama
-
-Make sure Ollama is installed and the required model is available.
+### 1. Clone the Repository
 
 ```bash
-ollama serve
+git clone https://github.com/roniarosariosamk/AI-Resume-Screening-System.git
+cd AI-Resume-Screening-System
 ```
 
-If required, pull the model:
+### 2. Install Dependencies
 
 ```bash
-ollama pull llama3
+pip install -r requirements.txt
 ```
 
-### Run the Streamlit App
+### 3. Configure Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+GOOGLE_API_KEY=YOUR_GEMINI_API_KEY
+EMAIL=your_email@gmail.com
+APP_PASSWORD=your_gmail_app_password
+```
+
+Generate your Gemini API key from:
+
+https://aistudio.google.com/app/apikey
+
+### 4. Run the Application
 
 ```bash
 streamlit run app.py
 ```
 
-The application will open automatically in your default browser.
+The application will open in your browser at:
 
 ```
 http://localhost:8501
 ```
+
 
 ## 🔑 Default Admin Login
 

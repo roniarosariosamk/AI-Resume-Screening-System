@@ -1,14 +1,21 @@
+import os
 import streamlit as st
-from langchain_ollama import ChatOllama
+
+from dotenv import load_dotenv
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+# Load environment variables
+load_dotenv()
 
 
 @st.cache_resource
 def load_llm():
     """
-    Load the Ollama Llama 3 model only once.
+    Load the Gemini model only once.
     """
 
-    return ChatOllama(
-        model="llama3",
+    return ChatGoogleGenerativeAI(
+        model="gemini-2.5-flash",
+        google_api_key=os.getenv("GOOGLE_API_KEY"),
         temperature=0
     )
