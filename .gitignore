@@ -49,3 +49,5 @@ data/job_description/
 # Logs
 # -----------------------------
 * .log
+
+#.env
