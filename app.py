@@ -24,6 +24,7 @@ from pages.upload import show_upload_page
 from utils.jd_processor import process_job_description
 from utils.resume_processor import process_resume
 from pages.dashboard import show_dashboard
+from pages.analytics import show_analytics
 # -------------------------------------------------
 # Streamlit Page Configuration
 # -------------------------------------------------
@@ -329,13 +330,11 @@ if process:
             resume_embeddings
         )
 
-        st.sidebar.success("✅ Vector Database Created Successfully!")
-        st.subheader("🏆 Resume Ranking")
+        st.sidebar.success(
+            "✅ Vector Database Created Successfully!"
+        )
 
-        for index, resume in enumerate(ranking, start=1):
-            st.write(
-                f"{index}. {resume['name']}  →  {resume['score'] * 100:.2f}% Match"
-            )         
+        show_analytics(ranking)       
 
 # -------------------------------------------------
 # Download ATS Report
@@ -349,53 +348,6 @@ if process:
         show_dashboard(
             st.session_state.candidate_data,
             report_df
-        )
-
-# -----------------------------------------
-# ATS Score Chart
-# -----------------------------------------
-
-        st.markdown("---")
-        st.subheader("📊 ATS Score Comparison")
-
-        chart_data = report_df.set_index("Resume")[["ATS Score"]]
-
-        st.bar_chart(chart_data)
-
-        # Display the report in Streamlit
-        st.dataframe(report_df, use_container_width=True)
-
-# -----------------------------------------
-# ATS Score Bar Chart
-# -----------------------------------------
-
-        st.subheader("📊 ATS Score Comparison")
-
-        fig = px.bar(
-            report_df,
-            x="Resume",
-            y="ATS Score",
-            color="ATS Score",
-            text="ATS Score",
-            title="ATS Score by Resume"
-        )
-
-        fig.update_layout(
-            xaxis_title="Candidate",
-            yaxis_title="ATS Score (%)"
-        )
-
-        st.plotly_chart(fig, use_container_width=True)
-
-        # Convert DataFrame to CSV
-        csv = report_df.to_csv(index=False).encode("utf-8")
-
-        # Download button
-        st.download_button(
-            label="📥 Download ATS Report (CSV)",
-            data=csv,
-            file_name="ATS_Report.csv",
-            mime="text/csv"
         )
 
 # -------------------------------------------------

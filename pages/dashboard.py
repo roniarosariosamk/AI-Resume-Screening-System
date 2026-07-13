@@ -1,4 +1,6 @@
 import streamlit as st
+import pandas as pd
+import plotly.express as px
 
 from components.candidate_card import show_candidate_card
 
@@ -119,3 +121,64 @@ def show_dashboard(candidate_data, report_df):
             "📉 Lowest ATS",
             f"{lowest_score:.2f}%"
         )          
+
+    # -------------------------------------------------
+    # ATS Score Chart
+    # -------------------------------------------------
+
+    st.markdown("---")
+
+    st.subheader("📊 ATS Score Comparison")
+
+    chart_data = report_df.set_index("Resume")[["ATS Score"]]
+
+    st.bar_chart(chart_data)
+
+    # -------------------------------------------------
+    # Report Table
+    # -------------------------------------------------
+
+    st.dataframe(
+       report_df,
+       use_container_width=True
+    )
+
+    # -------------------------------------------------
+    # Plotly Chart
+    # -------------------------------------------------
+
+    st.subheader("📈 ATS Score Visualization")
+
+    fig = px.bar(
+        report_df,
+        x="Resume",
+        y="ATS Score",
+        color="ATS Score",
+        text="ATS Score",
+        title="ATS Score by Resume"
+    )
+
+    fig.update_layout(
+        xaxis_title="Candidate",
+        yaxis_title="ATS Score (%)"
+    )
+
+    st.plotly_chart(
+        fig,
+        use_container_width=True
+    )
+
+    # -------------------------------------------------
+    # CSV Download
+    # -------------------------------------------------
+
+    csv = report_df.to_csv(
+        index=False
+    ).encode("utf-8")
+
+    st.download_button(
+        label="📥 Download ATS Report (CSV)",
+        data=csv,
+        file_name="ATS_Report.csv",
+        mime="text/csv"
+    )       
