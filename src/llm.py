@@ -4,18 +4,19 @@ import streamlit as st
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-# Load environment variables
 load_dotenv()
 
 
 @st.cache_resource
 def load_llm():
-    """
-    Load the Gemini model only once.
-    """
+
+    api_key = st.secrets.get(
+        "GOOGLE_API_KEY",
+        os.getenv("GOOGLE_API_KEY")
+    )
 
     return ChatGoogleGenerativeAI(
         model="gemini-2.5-flash",
-        google_api_key=os.getenv("GOOGLE_API_KEY"),
+        google_api_key=api_key,
         temperature=0
     )
