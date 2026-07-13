@@ -25,6 +25,7 @@ from utils.jd_processor import process_job_description
 from utils.resume_processor import process_resume
 from pages.dashboard import show_dashboard
 from pages.analytics import show_analytics
+from pages.reports import show_reports
 # -------------------------------------------------
 # Streamlit Page Configuration
 # -------------------------------------------------
@@ -350,6 +351,10 @@ if process:
             report_df
         )
 
+        show_analytics(ranking)
+
+        show_reports()
+
 # -------------------------------------------------
 # Interview Question Generator
 # -------------------------------------------------
@@ -426,135 +431,7 @@ if st.session_state.processed:
             st.session_state["evaluation"] = evaluation
 
         st.subheader("📋 AI Evaluation Report")
-        st.write(evaluation)
-
-# -------------------------------------------------
-# Send Interview Invitation
-# -------------------------------------------------
-
-if st.session_state.processed:
-
-    st.markdown("---")
-    st.header("📧 Send Interview Invitation")
-
-    candidate_names = [
-        candidate["name"]
-        for candidate in st.session_state.candidate_data
-    ]
-
-    selected_candidate_email = st.selectbox(
-        "Select Candidate",
-        candidate_names,
-        key="email_candidate"
-    )
-
-    candidate = next(
-    c for c in st.session_state.candidate_data
-    if c["name"] == selected_candidate_email
-    )
-
-    receiver_email = st.text_input(
-        "Candidate Email Address",
-        placeholder="candidate@example.com"
-    )
-
-    interview_date = st.date_input("Interview Date")
-
-    interview_time = st.time_input("Interview Time")
-
-    if st.button("📧 Send Interview Invitation"):
-
-        sender_email = st.secrets["EMAIL"]
-        sender_password = st.secrets["APP_PASSWORD"]
-
-        subject = "Interview Invitation"
-
-        body = f"""
-Dear {candidate['name']},
-
-Congratulations!
-
-We are pleased to inform you that you have been shortlisted for the interview based on your resume screening and AI evaluation.
-
-Interview Details
--------------------------
-Date : {interview_date}
-Time : {interview_time}
-Mode : Online
-
-Please join the interview 10 minutes before the scheduled time.
-
-We look forward to speaking with you.
-
-Best Regards,
-HR Team
-Resume Screening AI System
-"""
-
-        try:
-
-            send_email(
-                sender_email,
-                sender_password,
-                receiver_email,
-                subject,
-                body
-            )
-
-            st.success("✅ Interview Invitation Sent Successfully!")
-
-        except Exception as e:
-
-            st.error(f"Error: {e}") 
-
-# -------------------------------------------------
-# PDF ATS Report
-# -------------------------------------------------
-
-if st.session_state.processed:
-
-    st.markdown("---")
-    st.header("📄 Download ATS Report (PDF)")
-
-    candidate_names = [
-        candidate["name"]
-        for candidate in st.session_state.candidate_data
-    ]
-
-    selected_candidate_pdf = st.selectbox(
-        "Select Candidate",
-        candidate_names,
-        key="pdf_candidate"
-    )
-
-    if st.button("Generate PDF Report"):
-
-        candidate = next(
-            c for c in st.session_state.candidate_data
-            if c["name"] == selected_candidate_pdf
-        )
-
-        pdf_file = generate_pdf_report(
-            filename=f"{candidate['name']}_ATS_Report.pdf",
-            candidate_name=candidate["name"],
-            ats_score=candidate["ats_score"],
-            matched_skills=", ".join(candidate["matched"]),
-            missing_skills=", ".join(candidate["missing"]),
-            recommendation=candidate["recommendation"],
-            evaluation=st.session_state.get(
-                "evaluation",
-                "Evaluation not available."
-            )
-        )
-
-        with open(pdf_file, "rb") as file:
-
-            st.download_button(
-                label="📄 Download PDF Report",
-                data=file,
-                file_name="ATS_Report.pdf",
-                mime="application/pdf"
-            )                  
+        st.write(evaluation)             
 
 # -------------------------------------------------
 # Chat Section
