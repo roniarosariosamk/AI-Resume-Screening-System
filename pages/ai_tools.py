@@ -84,7 +84,7 @@ def show_ai_tools():
                 st.session_state.jd_text
             )
 
-            st.session_state[EVELUATION_KEY] = evaluation
+            st.session_state[EVALUATION_KEY] = evaluation
 
         st.subheader("📋 AI Evaluation Report")
 
