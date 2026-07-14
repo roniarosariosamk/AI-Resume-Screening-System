@@ -1,11 +1,9 @@
 from .llm import get_llm
 
-llm = get_llm()
-
 
 def generate_interview_questions(summary, skills, job_description):
 
-    print("Function Started")
+    llm = get_llm()
 
     prompt = f"""
 You are an experienced technical interviewer.
@@ -22,11 +20,9 @@ Job Description:
 Generate exactly 5 interview questions.
 """
 
-    print("Prompt Created")
+    try:
+        response = llm.invoke(prompt)
+        return response.content
 
-    response = llm.invoke(prompt)
-
-    print("LLM Response Received")
-    print(response)
-
-    return response.content
+    except Exception as e:
+        return f"❌ Gemini Error:\n\n{str(e)}"
