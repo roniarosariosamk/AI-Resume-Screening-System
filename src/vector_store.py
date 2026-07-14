@@ -13,6 +13,7 @@ def create_vector_store(all_chunks, embedding):
     """
 
     if os.path.exists(INDEX_PATH):
+        
         return FAISS.load_local(
             INDEX_PATH,
             embedding,

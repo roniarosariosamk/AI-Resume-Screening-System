@@ -130,6 +130,8 @@ if process:
 
         start_time = time.time()
 
+        progress = st.progress(0, text="🚀 Starting processing...")
+
         # -----------------------------------------
         # Save Job Description
         # -----------------------------------------
@@ -140,6 +142,8 @@ if process:
             jd_text, jd_embedding, jd_skills = process_job_description(
                 job_description
             )
+
+            progress.progress(20, text="✅ Job Description Processed")
 
             st.info(f"✅ Job Description Processed in {time.time()-start_time:.2f} sec")
 
@@ -168,7 +172,9 @@ if process:
             report_data = []
             candidate_data = []
 
-            for uploaded_file in uploaded_files:
+            for index, uploaded_file in enumerate(uploaded_files, start=1):
+                total_files = len(uploaded_files)
+            
 
                 (
                     text,
@@ -181,6 +187,13 @@ if process:
                 ) = process_resume(
                     uploaded_file,
                     jd_skills
+                )
+
+                progress_value = 20 + int((index / total_files) * 70)
+
+                progress.progress(
+                    progress_value,
+                    text=f"📄 Processing {uploaded_file.name} ({index}/{total_files})"
                 )
 
                 st.info(f"✅ {uploaded_file.name} processed in {time.time()-start_time:.2f} sec")
@@ -286,11 +299,18 @@ if process:
                         }
                     )
 
+            progress.progress(100, text="🎉 All resumes processed successfully!")
+            st.success("✅ Resume processing completed!")       
+
             # -----------------------------------------
             # Create Vector Database
             # -----------------------------------------
 
             embed_start = time.time()
+
+            @st.cache_resource(show_spinner=False)
+            def load_vector_store(chunks, embedding):
+                return create_vector_store(chunks, embedding)
 
             embedding = load_embedding_model()
 
@@ -300,7 +320,7 @@ if process:
 
             vector_start = time.time()
 
-            create_vector_store(
+            vector_db = load_vector_store(
                 all_chunks,
                 embedding
            )
@@ -313,7 +333,7 @@ if process:
             st.success(
                 f"🎉 Total Processing Time: {time.time()-start_time:.2f} seconds"
             )
-            
+
             # -----------------------------------------
             # Save Data to Session State
             # -----------------------------------------

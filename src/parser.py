@@ -1,5 +1,7 @@
 import fitz  # PyMuPDF
+import streamlit as st
 
+@st.cache_data(show_spinner=False)
 def extract_text(pdf_path):
     """
     Extract text from a PDF file.
