@@ -23,9 +23,7 @@ Generate exactly 5 interview questions.
     try:
         response = llm.invoke(prompt)
         return response.content
-    
-    except ChatGoogleGenerativeAIError as e:
-        return f"Gemini Error:\n\n{e}"
 
     except Exception as e:
+        # Catch all errors (specific SDK exception may not be available/imported)
         return f"❌ Gemini Error:\n\n{str(e)}"
