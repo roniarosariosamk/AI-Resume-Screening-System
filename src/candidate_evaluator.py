@@ -1,12 +1,17 @@
 from .llm import get_llm
 
-llm = get_llm()
+try:
+    from google.genai.errors import ClientError
+except ImportError:
+    ClientError = Exception
 
 
 def evaluate_candidate(summary, skills, job_description):
     """
     Generate an AI evaluation of the candidate.
     """
+
+    llm = get_llm()
 
     prompt = f"""
 You are an experienced HR Manager.
@@ -37,6 +42,35 @@ Also provide:
 Keep the response professional and well formatted.
 """
 
-    response = llm.invoke(prompt)
+    try:
+        response = llm.invoke(prompt)
+        return response.content
 
-    return response.content
+    except ClientError as e:
+
+        error_text = str(e)
+
+        if "RESOURCEEXHAUSTED" in error_text or "429" in error_text:
+            return """
+❌ Gemini API Quota Exceeded
+
+Your Gemini API has reached its current usage limit.
+
+Possible reasons:
+• Daily free quota exhausted
+• Requests per minute exceeded
+• Token limit exceeded
+
+Solutions:
+• Wait until the quota resets
+• Generate a new API key
+• Enable billing in Google AI Studio
+• Upgrade your Gemini plan
+
+The candidate evaluation could not be generated at this time.
+"""
+
+        return f"Gemini API Error:\n\n{error_text}"
+
+    except Exception as e:
+        return f"Unexpected Error:\n\n{e}"
