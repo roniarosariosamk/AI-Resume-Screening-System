@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 import pandas as pd
+import time
 
 from src.parser import extract_text, generate_resume_summary
 from src.chunking import split_text
@@ -127,6 +128,8 @@ if process:
         st.sidebar.warning("Please upload at least one resume.")
     else:
 
+        start_time = time.time()
+
         # -----------------------------------------
         # Save Job Description
         # -----------------------------------------
@@ -137,6 +140,8 @@ if process:
             jd_text, jd_embedding, jd_skills = process_job_description(
                 job_description
             )
+
+            st.info(f"✅ Job Description Processed in {time.time()-start_time:.2f} sec")
 
             # Success Message
             st.sidebar.success(
@@ -177,6 +182,8 @@ if process:
                     uploaded_file,
                     jd_skills
                 )
+
+                st.info(f"✅ {uploaded_file.name} processed in {time.time()-start_time:.2f} sec")
 
                 candidate_data.append({
                     "name": uploaded_file.name,
@@ -283,12 +290,29 @@ if process:
             # Create Vector Database
             # -----------------------------------------
 
+            embed_start = time.time()
+
             embedding = load_embedding_model()
+
+            st.success(
+                f"Embedding model loaded in {time.time()-embed_start:.2f} sec"
+            )
+
+            vector_start = time.time()
 
             create_vector_store(
                 all_chunks,
                 embedding
            )
+            
+
+            st.success(
+                f"Vector DB created in {time.time()-vector_start:.2f} sec"
+            )
+            
+            st.success(
+                f"🎉 Total Processing Time: {time.time()-start_time:.2f} seconds"
+            )
             
             # -----------------------------------------
             # Save Data to Session State
