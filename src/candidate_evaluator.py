@@ -1,6 +1,6 @@
-from .llm import load_llm
+from .llm import get_llm
 
-llm = load_llm()
+llm = get_llm()
 
 
 def evaluate_candidate(summary, skills, job_description):

@@ -1,6 +1,6 @@
 from .embeddings import load_embedding_model
 from .retriever import load_vector_store, retrieve_documents
-from .llm import load_llm
+from .llm import get_llm
 from .prompts import prompt
 
 
@@ -9,7 +9,7 @@ def ask_question(question):
     # Load only when the function is called
     embedding = load_embedding_model()
     db = load_vector_store(embedding)
-    llm = load_llm()
+    llm = get_llm()
 
     docs = retrieve_documents(
         db,
