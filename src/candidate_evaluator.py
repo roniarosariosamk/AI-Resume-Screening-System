@@ -1,5 +1,5 @@
 from .llm import get_llm
-
+from .gemini_utils import extract_text
 try:
     from google.genai.errors import ClientError
 except ImportError:
@@ -44,7 +44,32 @@ Keep the response professional and well formatted.
 
     try:
         response = llm.invoke(prompt)
-        return response.content
+
+        return extract_text(response)
+
+        content = response.content
+
+        if isinstance(content, str):
+            return content
+
+        if isinstance(content, list):
+
+            text = ""
+
+            for item in content:
+
+                if hasattr(item, "text"):
+                    text += item.text + "\n"
+
+                elif isinstance(item, dict):
+                    text += item.get("text", "")
+
+                else:
+                    text += str(item)
+
+            return text.strip()
+
+        return str(content)
 
     except ClientError as e:
 
