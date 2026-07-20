@@ -24,7 +24,7 @@ An AI-powered Resume Screening System that helps recruiters automatically analyz
 
 ### Home Page
 
-![Home](assets/home.png)
+![Home]
 
 ---
 
@@ -151,3 +151,5 @@ https://github.com/roniarosariosamk
 ---
 
 # ⭐ If you found this project useful, consider giving it a star!
+
+[def]: E:\ragbot\RAGBOT\ragbot\src\assets\home.png
