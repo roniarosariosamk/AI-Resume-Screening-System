@@ -24,7 +24,7 @@ An AI-powered Resume Screening System that helps recruiters automatically analyz
 
 ### Home Page
 
-![Home] (assets\home.png)
+![Home] (assets/home.png)
 
 ## 📄 Job Description Upload
 
