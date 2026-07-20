@@ -20,6 +20,30 @@ An AI-powered Resume Screening System that helps recruiters automatically analyz
 
 ---
 
+## 📸 Screenshots
+
+### Home Page
+
+![Home](assets/home.png)
+
+---
+
+### Candidate Analysis
+
+![Candidate](assets/candidate.png)
+
+---
+
+### AI Tools
+
+![AI Tools](assets/ai_tools.png)
+
+---
+
+### Reports
+
+![Reports](assets/reports.png)
+
 # 🛠️ Tech Stack
 
 Frontend

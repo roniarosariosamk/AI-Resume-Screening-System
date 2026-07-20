@@ -51,3 +51,7 @@ data/job_description/
 * .log
 
 #.env
+
+.idea/
+
+
