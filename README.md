@@ -24,54 +24,54 @@ An AI-powered Resume Screening System that helps recruiters automatically analyz
 
 ### Home Page
 
-![Home] (assets/home.png)
+![Dark themed admin login screen for Resume Screening RAG Chatbot showing username and password fields and a login button](assets/home.png)
 
 ## 📄 Job Description Upload
 
-![Job Description](assets/job_description.png)
+![Job description upload interface showing a section for uploading job details into the recruitment assistant](assets/job_description.png)
 
 ## 👤 Candidate Dashboard
 
-![Candidate Dashboard](assets/candidate_dashboard.png)
+![Candidate dashboard with evaluation metrics and filtered applicant data panels in the recruitment system](assets/candidate_dashboard.png)
 
 ## 📑 Candidate Resume
 
-![Candidate Resume](assets/candidate_resume.png)
+![Parsed candidate resume view displaying extracted skills and experience fields in the application interface](assets/candidate_resume.png)
 
 
 ## 📊 ATS Score Visualization
 
-![ATS Score](assets/ats_score_visualization.png)
+![Dashboard visualization showing ATS score distribution and candidate ranking charts in the application interface](assets/ats_score_visualization.png)
 
 ## 📈 ATS Score Comparison
 
-![ATS Comparison](assets/ats_score_comparison.png)
+![Comparison chart showing ATS score differences across candidate resumes](assets/ats_score_comparison.png)
 
 ---
 
 ### Candidate Analysis
 
-![Candidate](assets/analytics.png)
+![Analytics dashboard summarizing candidate strengths, skill matches, and recruitment insights](assets/analytics.png)
 
 ---
 
 ### AI Tools
 
-![AI Tools](assets/ai_tools.png)
+![AI tools panel showing options for interview question generation and candidate evaluation features](assets/ai_tools.png)
 
 ---
 
 ### Reports
 
-![Reports](assets/reports.png)
+![Reports section displaying PDF report generation options and summary output](assets/reports.png)
 
 ## 🏆 Top Candidate
 
-![Top Candidate](assets/top_candidate.png)
+![Top candidate profile highlighted in the recruitment dashboard as best match for the role](assets/top_candidate.png)
 
 ## 💬 User Queries
 
-![User Queries](assets/user_queries.png)
+![User query interface showing chat-style questions and responses about candidate information](assets/user_queries.png)
 
 # 🛠️ Tech Stack
 
