@@ -51,7 +51,7 @@ An AI-powered Resume Screening System that helps recruiters automatically analyz
 
 ### Candidate Analysis
 
-![Analysis](assets/analysis.png)
+![Analysis](assets/candidate_analysis.png)
 
 ---
 
