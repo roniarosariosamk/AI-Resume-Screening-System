@@ -24,24 +24,24 @@ An AI-powered Resume Screening System that helps recruiters automatically analyz
 
 ### Home Page
 
-![Home] (E:\ragbot\RAGBOT\ragbot\assets\home.png)
+![Home] (assets\home.png)
 
 ## 📄 Job Description Upload
 
-![Job Description](E:\ragbot\RAGBOT\ragbot\assets\job_description.png)
+![Job Description](assets/job_description.png)
 
 ## 👤 Candidate Dashboard
 
-![Candidate Dashboard](E:\ragbot\RAGBOT\ragbot\assets\candidate_dashboard.png)
+![Candidate Dashboard](assets/candidate_dashboard.png)
 
 ## 📑 Candidate Resume
 
-![Candidate Resume](E:\ragbot\RAGBOT\ragbot\assets\candidate_resume.png)
+![Candidate Resume](assets/candidate_resume.png)
 
 
 ## 📊 ATS Score Visualization
 
-![ATS Score](E:\ragbot\RAGBOT\ragbot\assets\ats_score_visualization.png)
+![ATS Score](assets/ats_score_visualization.png)
 
 ## 📈 ATS Score Comparison
 
@@ -51,27 +51,27 @@ An AI-powered Resume Screening System that helps recruiters automatically analyz
 
 ### Candidate Analysis
 
-![Candidate](E:\ragbot\RAGBOT\ragbot\assets\analytics.png)
+![Candidate](assets/analytics.png)
 
 ---
 
 ### AI Tools
 
-![AI Tools](E:\ragbot\RAGBOT\ragbot\assets\ai_tools.png)
+![AI Tools](assets/ai_tools.png)
 
 ---
 
 ### Reports
 
-![Reports](E:\ragbot\RAGBOT\ragbot\assets\reports.png)
+![Reports](assets/reports.png)
 
 ## 🏆 Top Candidate
 
-![Top Candidate](E:\ragbot\RAGBOT\ragbot\assets\top_candidate.png)
+![Top Candidate](assets/top_candidate.png)
 
 ## 💬 User Queries
 
-![User Queries](E:\ragbot\RAGBOT\ragbot\assets\user_queries.png)
+![User Queries](assets/user_queries.png)
 
 # 🛠️ Tech Stack
 
