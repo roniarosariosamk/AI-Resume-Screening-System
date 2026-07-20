@@ -51,7 +51,7 @@ An AI-powered Resume Screening System that helps recruiters automatically analyz
 
 ### Candidate Analysis
 
-![Analytics section of recruitment dashboard with title analytics and a resume ranking list showing Resume3.pdf 57.05% Match Resume2.pdf 38.72% Match Resume1.pdf 36.67% Match Resume4.pdf 34.69% Match plus a download ATS report prompt on a dark background](assets/analytics.png)
+![Analysis](assets/analysis.png)
 
 ---
 
