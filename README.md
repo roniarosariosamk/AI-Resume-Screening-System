@@ -1,3 +1,12 @@
+# 🚀 AI Resume Screening System
+
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-Deployed-red)
+![LangChain](https://img.shields.io/badge/LangChain-AI-green)
+![Gemini](https://img.shields.io/badge/Google-Gemini-orange)
+![FAISS](https://img.shields.io/badge/FAISS-VectorDB-blueviolet)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
 # 🤖 AI Resume Screening & Recruitment Assistant
 
 An AI-powered Resume Screening System that helps recruiters automatically analyze resumes, calculate ATS scores, generate interview questions, evaluate candidates using LLMs, and send interview invitations.
