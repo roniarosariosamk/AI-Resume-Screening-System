@@ -24,50 +24,50 @@ An AI-powered Resume Screening System that helps recruiters automatically analyz
 
 ### Home Page
 
-![Dark themed admin login screen for Resume Screening RAG Chatbot showing username and password fields and a login button](assets/home.png)
+![Dark themed admin login screen for Resume Screening RAG Chatbot showing login form with username password fields and a login button on a dark background](assets/home.png)
 
 ## 📄 Job Description Upload
 
-![Job description upload interface showing a section for uploading job details into the recruitment assistant](assets/job_description.png)
+![Job description upload interface with an upload panel and instructions for adding job details in a recruitment assistant layout](assets/job_description.png)
 
 ## 👤 Candidate Dashboard
 
-![Candidate dashboard with evaluation metrics and filtered applicant data panels in the recruitment system](assets/candidate_dashboard.png)
+![Candidate dashboard displaying evaluation metrics panels and filtered applicant data cards in a recruitment system interface](assets/candidate_dashboard.png)
 
 ## 📑 Candidate Resume
 
-![Parsed candidate resume view displaying extracted skills and experience fields in the application interface](assets/candidate_resume.png)
+![Parsed candidate resume view showing highlighted extracted skills and experience fields in the application interface](assets/candidate_resume.png)
 
 
 ## 📊 ATS Score Visualization
 
-![Dashboard visualization showing ATS score distribution and candidate ranking charts in the application interface](assets/ats_score_visualization.png)
+![Dashboard visualization showing ATS score distribution and candidate ranking charts with performance metrics in the application interface](assets/ats_score_visualization.png)
 
 ## 📈 ATS Score Comparison
 
-![Comparison chart showing ATS score differences across candidate resumes](assets/ats_score_comparison.png)
+![Comparison chart showing ATS score differences across candidate resumes with bars comparing percentages](assets/ats_score_comparison.png)
 
 ---
 
 ### Candidate Analysis
 
-![Analytics dashboard summarizing candidate strengths, skill matches, and recruitment insights](assets/analytics.png)
+![Analytics section of recruitment dashboard with title analytics and a resume ranking list showing Resume3.pdf 57.05% Match Resume2.pdf 38.72% Match Resume1.pdf 36.67% Match Resume4.pdf 34.69% Match plus a download ATS report prompt on a dark background](assets/analytics.png)
 
 ---
 
 ### AI Tools
 
-![AI tools panel showing options for interview question generation and candidate evaluation features](assets/ai_tools.png)
+![AI tools panel showing options for interview question generation and candidate evaluation features in a sidebar layout](assets/ai_tools.png)
 
 ---
 
 ### Reports
 
-![Reports section displaying PDF report generation options and summary output](assets/reports.png)
+![Reports section showing PDF report generation options and summary output with document icon and report controls](assets/reports.png)
 
 ## 🏆 Top Candidate
 
-![Top candidate profile highlighted in the recruitment dashboard as best match for the role](assets/top_candidate.png)
+![Top candidate profile highlighted in the recruitment dashboard as best match for the role with candidate match score emphasis](assets/top_candidate.png)
 
 ## 💬 User Queries
 
