@@ -24,7 +24,8 @@ An AI-powered Resume Screening System that helps recruiters automatically analyz
 
 ### Home Page
 
-![Home]
+![Home] e:\ragbot\RAGBOT\ragbot\assets\home.png
+
 
 ---
 
