@@ -1,9 +1,11 @@
+import streamlit as st
 from langchain_community.vectorstores import FAISS
 
 
+@st.cache_resource(show_spinner=False)
 def load_vector_store(embedding):
     """
-    Load the saved FAISS vector database.
+    Load the FAISS vector database only once.
     """
 
     db = FAISS.load_local(
@@ -15,14 +17,14 @@ def load_vector_store(embedding):
     return db
 
 
-def retrieve_documents(db, query, k=3):
+def retrieve_documents(db, question, k=3):
     """
-    Retrieve the top-k most relevant resume chunks.
+    Retrieve relevant documents from FAISS.
     """
 
-    results = db.similarity_search(
-        query,
+    docs = db.similarity_search(
+        question,
         k=k
     )
 
-    return results
+    return docs

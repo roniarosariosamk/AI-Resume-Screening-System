@@ -20,6 +20,7 @@ from pages.analytics import show_analytics
 from pages.reports import show_reports
 from pages.chatbot import show_chatbot
 from pages.ai_tools import show_ai_tools
+from src.retriever import load_vector_store
 from utils.constants import (
     APP_TITLE,
     RESUME_FOLDER,
@@ -307,11 +308,7 @@ if process:
             # -----------------------------------------
 
             embed_start = time.time()
-
-            @st.cache_resource(show_spinner=False)
-            def load_vector_store(chunks, embedding):
-                return create_vector_store(chunks, embedding)
-
+            
             embedding = load_embedding_model()
 
             st.success(
@@ -320,7 +317,7 @@ if process:
 
             vector_start = time.time()
 
-            vector_db = load_vector_store(
+            vector_db = create_vector_store(
                 all_chunks,
                 embedding
            )
