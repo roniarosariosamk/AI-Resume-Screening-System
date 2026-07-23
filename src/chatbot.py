@@ -2,6 +2,7 @@ from .embeddings import load_embedding_model
 from .retriever import load_vector_store, retrieve_documents
 from .llm import get_llm
 from .prompts import prompt
+from .utils import extract_text_from_response
 
 try:
     from google.genai.errors import ServerError, ClientError
@@ -51,6 +52,9 @@ Try asking another question.
                 "question": question
             }
         )
+
+
+        return extract_text_from_response(response)
 
         return response.content
 

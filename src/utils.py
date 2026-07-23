@@ -1,15 +1,38 @@
-import os
-
-
-def get_pdf_files(folder_path):
+def extract_text_from_response(response):
     """
-    Returns a list of PDF file paths from the given folder.
+    Extract plain text from LangChain/Gemini responses.
+
+    Works with:
+    - AIMessage.content as string
+    - AIMessage.content as list of blocks
+    - Future LangChain response formats
     """
 
-    pdf_files = []
+    if response is None:
+        return ""
 
-    for file in os.listdir(folder_path):
-        if file.lower().endswith(".pdf"):
-            pdf_files.append(os.path.join(folder_path, file))
+    content = getattr(response, "content", response)
 
-    return pdf_files
+    # Plain string
+    if isinstance(content, str):
+        return content.strip()
+
+    # List of content blocks
+    if isinstance(content, list):
+        text_parts = []
+
+        for item in content:
+
+            if isinstance(item, dict):
+                if item.get("type") == "text":
+                    text_parts.append(item.get("text", ""))
+
+            elif hasattr(item, "text"):
+                text_parts.append(item.text)
+
+            else:
+                text_parts.append(str(item))
+
+        return "\n".join(text_parts).strip()
+
+    return str(content)
